@@ -12,18 +12,23 @@
 */
 
 /* Front-end routes */
-Route::get('/', 'HomeController@index')->name('home');
-Route::get('/nos-produits', 'PageController@products')->name('products');
-Route::get('/service-traiteur', 'PageController@service')->name('service');
-Route::get('/a-propos', 'PageController@about')->name('about');
-Route::get('/nous-contacter', 'PageController@contact')->name('contact');
+Route::get('/', 'PagesController@home')->name('home');
+Route::get('/nos-produits', 'PagesController@products')->name('products');
+Route::get('/service-traiteur', 'PagesController@services')->name('services');
+Route::get('/a-propos', 'PagesController@about')->name('about');
+Route::get('/nous-contacter', 'PagesController@contact')->name('contact');
 
 /* Back-end routes */
-Route::group(['prefix' => 'backboulish', 'middleware' => 'auth.admin'], function() {
-    Route::resource('/nos-produits','ProductsController')->name('admin.products');
-    Route::resource('/categories','CategoriesController')->name('admin.categories');
-    Route::resource('/plats-du-jour','MealsController')->name('admin.meals');
-    Route::resource('/promos','DiscountsController')->name('admin.discounts');
-    Route::resource('/promos','DiscountsController')->name('admin.discounts');
+Route::prefix('admin')->group(function() {
+    // Route::resource('/nos-produits','ProductsController')->name('admin.products');
+    // Route::resource('/nos-services','ServicesController')->name('admin.services');
+    // Route::resource('/plats-du-jour','MealsController')->name('admin.meals');
+    // Route::resource('/promos','DiscountsController')->name('admin.discounts');
+    Route::get('/nos-categories', 'CategoriesController@index');
+    Route::post('/create-product-category', 'CategoriesController@store')->name('admin.category.create');
 });
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
